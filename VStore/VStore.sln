@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VStore.ProductApi", "VStore.ProductApi\VStore.ProductApi.csproj", "{E0BB39FE-0613-4288-9254-77B90E77435D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VStore.OrderApi", "VStore.OrderApi\VStore.OrderApi.csproj", "{9EACC1D1-8874-4C93-A246-6F163B242B4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0BB39FE-0613-4288-9254-77B90E77435D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0BB39FE-0613-4288-9254-77B90E77435D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0BB39FE-0613-4288-9254-77B90E77435D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0BB39FE-0613-4288-9254-77B90E77435D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EACC1D1-8874-4C93-A246-6F163B242B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EACC1D1-8874-4C93-A246-6F163B242B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EACC1D1-8874-4C93-A246-6F163B242B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EACC1D1-8874-4C93-A246-6F163B242B4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7D43746-2ED2-4F3F-A827-91645197D6D2}
+	EndGlobalSection
+EndGlobal
