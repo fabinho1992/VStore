@@ -1,4 +1,4 @@
-﻿namespace VStore.OrderApi.Domain.Enum
+﻿namespace VStore.OrderApi.Domain.Models.Enum
 {
     public enum OrderStatus
     {

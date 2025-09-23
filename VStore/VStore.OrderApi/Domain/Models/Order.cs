@@ -1,6 +1,6 @@
-﻿using VStore.OrderApi.Domain.Enum;
+﻿using VStore.OrderApi.Domain.Models.Enum;
 
-namespace VStore.OrderApi.Domain;
+namespace VStore.OrderApi.Domain.Models;
 
 public class Order
 {

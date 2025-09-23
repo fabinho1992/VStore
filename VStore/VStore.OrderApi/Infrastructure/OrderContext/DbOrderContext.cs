@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using VStore.OrderApi.Domain;
+using VStore.OrderApi.Domain.Models;
 
 namespace VStore.OrderApi.Infrastructure.OrderContext
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VStore.OrderApi.Domain;
+using VStore.OrderApi.Domain.Models;
 
 namespace VStore.OrderApi.Infrastructure.OrderContext.Configurations
 {
