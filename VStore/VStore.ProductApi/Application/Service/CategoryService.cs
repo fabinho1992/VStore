@@ -75,6 +75,11 @@ namespace VStore.ProductApi.Application.Service
             return ResultViewModel<List<CategoryResponse>>.Success(responses);
         }
 
+        public Task<ResultViewModel<List<CategoryResponse>>> GetProductsOrder(string ids)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ResultViewModel<CategoryResponse>> Update(int id, CategoryInput update)
         {
             var categoryDb =  await _repository.FindById(id);

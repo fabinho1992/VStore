@@ -53,6 +53,11 @@ namespace VStore.ProductApi.Infrastructure.Repository
             return categories;
         }
 
+        public Task<List<Category>> GetProductsByIdsAsync(List<int> ids)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Category> Update(Category update)
         {
             _context.Entry(update).CurrentValues.SetValues(update);

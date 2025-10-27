@@ -9,15 +9,15 @@ namespace VStore.ProductApi.Application.Dtos.Responses
             
         }
 
-        public CategoryResponse(int id, string name, List<string> products)
+        public CategoryResponse(int id, string name, List<ProductResponseName> products)
         {
             Id = id;
             Name = name;
-            Products = products;
+            NameProduct = products;
         }
 
         public int Id { get; private set; }
         public string Name { get; private set; }
-        public List<string> Products { get; private set; }
+        public List<ProductResponseName> NameProduct { get; private set; }
     }
 }

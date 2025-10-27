@@ -5,6 +5,7 @@ using VStore.ProductApi.Application.Dtos.Responses;
 using VStore.ProductApi.Domain.IRepository;
 using VStore.ProductApi.Domain.IService;
 using VStore.ProductApi.Domain.Models;
+using VStore.ProductApi.Infrastructure.Repository;
 
 namespace VStore.ProductApi.Application.Service
 {
@@ -34,6 +35,31 @@ namespace VStore.ProductApi.Application.Service
 
             var response = _mapper.Map<ProductResponse>(product);
             return ResultViewModel<ProductResponse>.Success(response);
+        }
+
+        public async Task<ResultViewModel<List<ProductResponse>>> GetProductsOrder(string ids)
+        {
+                // Converter string "1,2,3" para lista [1, 2, 3]
+                var productIds = ids.Split(',')
+                    .Select(id => int.Parse(id.Trim()))
+                    .Distinct()
+                    .ToList();
+
+                // Buscar produtos do banco
+                var products = await _repository.GetProductsByIdsAsync(productIds);
+
+                // Converter para DTO
+                var productDtos = products.Select(p => new ProductResponse
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Stock = p.Stock,
+                    CategoryName = p.Catergory.Name
+                }).ToList();
+
+                return ResultViewModel<List<ProductResponse>>.Success(productDtos);
+
         }
 
         public async Task<ResultViewModel<List<ProductResponse>>> FindByText(string query)

@@ -1,0 +1,6 @@
+@VStore.EmailApi_HostAddress = http://localhost:5215
+
+GET {{VStore.EmailApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

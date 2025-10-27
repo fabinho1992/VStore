@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copia o .csproj e restaura dependências
-COPY Teste-DockerFile.csproj .
+COPY VStore.OrderApi.csproj .
 RUN dotnet restore "VStore.OrderApi.csproj"
 
 # Copia o resto do código

@@ -39,6 +39,13 @@ namespace VStore.ProductApi.Infrastructure.Repository
 
         }
 
+        public async Task<List<Product>> GetProductsByIdsAsync(List<int> ids)
+        {
+            return await _context.Products.Include(p => p.Catergory)
+                .Where(p => ids.Contains(p.Id))
+                .ToListAsync();
+        }
+
         public async Task<Product> FindById(int id)
         {
             var product = await _context.Products

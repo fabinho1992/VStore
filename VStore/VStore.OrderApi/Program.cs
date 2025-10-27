@@ -1,5 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using VStore.OrderApi.Apllication_Order.Dtos.Inputs;
+using VStore.OrderApi.Apllication_Order.Dtos.Response;
+using VStore.OrderApi.Apllication_Order.Mapping;
+using VStore.OrderApi.Apllication_Order.ProductHttpClient;
+using VStore.OrderApi.Apllication_Order.Service;
+using VStore.OrderApi.Domain.IRepository;
+using VStore.OrderApi.Domain.IService;
+using VStore.OrderApi.Domain.Models;
 using VStore.OrderApi.Infrastructure.OrderContext;
+using VStore.OrderApi.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +25,16 @@ builder.Services.AddDbContext<DbOrderContext>(options =>
     options.UseSqlServer(connectionString));
 //Dependency Injection
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+//HttpClient 
+builder.Services.AddHttpClient(); 
+builder.Services.AddScoped<IHttpGetProducts, HttpGetProducts>(); 
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IRepositoryOrder<Order>, OrderReposiitory>();
+builder.Services.AddScoped<ICRUDService<OrderResponse, OrderInput>, OrderService>();
 
 var app = builder.Build();
 

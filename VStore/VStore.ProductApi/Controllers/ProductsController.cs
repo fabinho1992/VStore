@@ -36,6 +36,22 @@ namespace VStore.ProductApi.Controllers
         }
 
         [HttpGet]
+        [Route("products-ids")]
+        public async Task<IActionResult> GetProductsByIds([FromQuery] string ids)
+        {
+            try
+            {
+                var result = await _service.GetProductsOrder(ids);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving products by IDs.");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet]
         [Route("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {

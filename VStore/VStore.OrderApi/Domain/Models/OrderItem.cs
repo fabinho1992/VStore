@@ -1,13 +1,18 @@
-﻿namespace VStore.OrderApi.Domain.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VStore.OrderApi.Domain.Models
 {
     public class OrderItem
     {
+        
         public int Id { get; private set; }
+        public int OrderId { get; set; }
         public int ProductId { get; private set; }
         public string ProductName { get; private set; }
         public int Quantity { get; private set; }
         public decimal UnitPrice { get; private set; }
         public decimal Subtotal { get; private set; }
+        public virtual Order Order { get; set; }
 
         internal OrderItem(int productId, string productName, int quantity, decimal unitPrice)
         {

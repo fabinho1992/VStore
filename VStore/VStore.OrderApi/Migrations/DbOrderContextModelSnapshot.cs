@@ -22,7 +22,7 @@ namespace VStore.OrderApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("VStore.OrderApi.Domain.Order", b =>
+            modelBuilder.Entity("VStore.OrderApi.Domain.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,9 +38,11 @@ namespace VStore.OrderApi.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -48,18 +50,18 @@ namespace VStore.OrderApi.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("VStore.OrderApi.Domain.OrderItem", b =>
+            modelBuilder.Entity("VStore.OrderApi.Domain.Models.OrderItem", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductName")
@@ -71,27 +73,32 @@ namespace VStore.OrderApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Subtotal")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("VStore.OrderApi.Domain.OrderItem", b =>
+            modelBuilder.Entity("VStore.OrderApi.Domain.Models.OrderItem", b =>
                 {
-                    b.HasOne("VStore.OrderApi.Domain.Order", null)
+                    b.HasOne("VStore.OrderApi.Domain.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("VStore.OrderApi.Domain.Order", b =>
+            modelBuilder.Entity("VStore.OrderApi.Domain.Models.Order", b =>
                 {
                     b.Navigation("Items");
                 });
