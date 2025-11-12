@@ -9,18 +9,22 @@ using System.Threading.Tasks;
 using UserApi.Domain;
 using UserApi.Domain.Events;
 using UserApi.Domain.Interfaces.IAuthService;
+using UserApi.Domain.ModelsAutentication;
+using VStore.Shared.Contracts.Events;
 
-namespace BookReviewManager.Infrastructure.Service.Identity
+namespace UserApi.Infrastructure.Service.Identity
 {
     public class CreateUser : ICreateUser
     {
         private readonly UserManager<User> _userManager;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly ILogger<CreateUser> _logger;
 
-        public CreateUser(UserManager<User> userManager, IPublishEndpoint publishEndpoint)
+        public CreateUser(UserManager<User> userManager, IPublishEndpoint publishEndpoint, ILogger<CreateUser> logger)
         {
             _userManager = userManager;
             _publishEndpoint = publishEndpoint;
+            _logger = logger;
         }
 
         public async Task<ResponseIdentityCreate> CreateUserAsync(RegisterUser registerUser)
@@ -53,6 +57,7 @@ namespace BookReviewManager.Infrastructure.Service.Identity
                 UserName = user.UserName,
                 CreatedAt = DateTime.UtcNow
             });
+            _logger.LogInformation("✅ Mensagem publicada com sucesso");
 
             return new ResponseIdentityCreate { Status = "Ok", Message = "User created successfully" };
 

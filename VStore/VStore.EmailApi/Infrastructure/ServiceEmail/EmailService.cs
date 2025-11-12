@@ -2,9 +2,9 @@
 using MimeKit;
 using System.Net;
 using System.Net.Mail;
-using UserApi.Domain.Interfaces.IEmailServices;
+using VStore.EmailApi.Domain.Interfaces;
 
-namespace UserApi.Infrastructure.EmailService
+namespace VStore.EmailApi.Infrastructure.EmailService
 {
     public class EmailService : IEmailService
     {
@@ -19,6 +19,18 @@ namespace UserApi.Infrastructure.EmailService
 
         public async Task SendEmailService(string subject, string toEmail, string userName, string message)
         {
+            if (string.IsNullOrWhiteSpace(subject))
+                throw new ArgumentNullException(nameof(subject));
+            if (string.IsNullOrWhiteSpace(toEmail))
+                throw new ArgumentNullException(nameof(toEmail));
+            if (string.IsNullOrWhiteSpace(userName))
+                throw new ArgumentNullException(nameof(userName));
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentNullException(nameof(message));
+
+            if (!IsValidEmail(toEmail))
+                throw new ArgumentException($"Email inválido: {toEmail}", nameof(toEmail));
+
             try
             {
                 _logger.LogInformation($"📧 Preparando email para: {toEmail}");
@@ -58,6 +70,25 @@ namespace UserApi.Infrastructure.EmailService
             {
                 _logger.LogError(ex, $"❌ Erro ao enviar email para: {toEmail}");
                 throw;
+            }
+
+
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                // Usa MailAddress para validar o formato
+                var mailAddress = new System.Net.Mail.MailAddress(email);
+                return mailAddress.Address == email;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

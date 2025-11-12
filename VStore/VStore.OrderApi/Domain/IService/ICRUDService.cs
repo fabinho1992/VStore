@@ -10,5 +10,6 @@ namespace VStore.OrderApi.Domain.IService
         Task<ResultViewModel<T>> Create(U create);
         Task<ResultViewModel<T>> Update(int id, U update);
         Task<ResultViewModel<bool>> Delete(int id);
+        Task<ResultViewModel<List<T>>> GetByListConsumer(Guid id);
     }
 }

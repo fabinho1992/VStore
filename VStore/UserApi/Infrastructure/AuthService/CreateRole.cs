@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserApi.Domain;
 using UserApi.Domain.Interfaces.IAuthService;
+using UserApi.Domain.ModelsAutentication;
 
 namespace BookReviewManager.Infrastructure.Service.Identity
 {

@@ -1,9 +1,11 @@
 ﻿using BookReviewManager.Domain.ModelsAutentication;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using UserApi.Domain;
+using UserApi.Domain.Events;
 using UserApi.Domain.Interfaces.IAuthService;
 
 namespace BookReviewManager.Infrastructure.Service.Identity
@@ -13,13 +15,16 @@ namespace BookReviewManager.Infrastructure.Service.Identity
         private ITokenService _tokenService;
         private UserManager<User> _userManager;
         private IConfiguration _configuration;
+        private readonly IPublishEndpoint _publishEndpoint;
+
 
         public LoginUser(ITokenService tokenService, UserManager<User>
-            userManager, IConfiguration configuration)
+            userManager, IConfiguration configuration, IPublishEndpoint publishEndpoint)
         {
             _tokenService = tokenService;
             _userManager = userManager;
             _configuration = configuration;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<ResponseLogin> LoginAsync(Login login)
@@ -48,6 +53,14 @@ namespace BookReviewManager.Infrastructure.Service.Identity
 
                 await _userManager.UpdateAsync(usuario);//atualizo o banco de dados com o usuario
 
+                await _publishEndpoint.Publish(new LoginEvent
+                {
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    Expired = token.ValidTo,
+                    Status = "Sucess 200",
+                    Message = "Token Generated Successfully"
+                });
+
                 return new ResponseLogin
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
@@ -55,6 +68,8 @@ namespace BookReviewManager.Infrastructure.Service.Identity
                     Status = "Sucess 200",
                     Message = "Token Generated Successfully"
                 };
+
+                
             }
             return new ResponseLogin
             {

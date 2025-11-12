@@ -4,7 +4,7 @@ namespace VStore.OrderApi.Domain.Models;
 
 public class Order
 {
-    public Order(int customerId)
+    public Order(Guid customerId)
     {
         CustomerId = customerId;
         Status = OrderStatus.PendingPayment;
@@ -14,7 +14,7 @@ public class Order
     }
 
     public int Id { get; private set; }
-    public int CustomerId { get; private set; }
+    public Guid CustomerId { get; private set; }
     public OrderStatus Status { get; private set; }
     public DateTime CreatedDate { get; private set; }
     public decimal TotalAmount { get; private set; }

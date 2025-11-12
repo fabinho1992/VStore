@@ -13,6 +13,19 @@ namespace UserApi.Infrastructure.Repository
             _context = context;
         }
 
+        public async Task<bool> Delete(User user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public Task<List<User>> GetAll()
+        {
+            var users = _context.Users.ToListAsync();
+            return users;
+        }
+
         public async Task<User> GetByEmail(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(e => e.UserName == email);

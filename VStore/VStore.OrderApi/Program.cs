@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UserApi.Application.DependencysInjections;
 using VStore.OrderApi.Apllication_Order.Dtos.Inputs;
 using VStore.OrderApi.Apllication_Order.Dtos.Response;
 using VStore.OrderApi.Apllication_Order.Mapping;
@@ -35,6 +36,8 @@ builder.Services.AddScoped<IHttpGetProducts, HttpGetProducts>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IRepositoryOrder<Order>, OrderReposiitory>();
 builder.Services.AddScoped<ICRUDService<OrderResponse, OrderInput>, OrderService>();
+
+builder.Services.AddMessageBus(builder.Configuration);
 
 var app = builder.Build();
 

@@ -40,8 +40,12 @@ namespace VStore.ProductApi.Controllers
         public async Task<IActionResult> GetProductsByIds([FromQuery] string ids)
         {
             try
-            {
+            { 
                 var result = await _service.GetProductsOrder(ids);
+                if (result.Data == null || !result.Data.Any())
+                {
+                    return NotFound(result.Message);
+                }
                 return Ok(result);
             }
             catch (Exception ex)

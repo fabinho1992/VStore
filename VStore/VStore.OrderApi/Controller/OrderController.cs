@@ -37,6 +37,17 @@ namespace VStore.OrderApi.Controller
             return BadRequest(result.Data);
         }
 
+        [HttpGet("id-consumer")]
+        public async Task<IActionResult> GetByConsumers(Guid id)
+        {
+            var result = await _orderService.GetByListConsumer(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Data);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> FindById(int id)
         {
@@ -47,6 +58,7 @@ namespace VStore.OrderApi.Controller
             }
             return NotFound(result.Data);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -55,7 +67,7 @@ namespace VStore.OrderApi.Controller
             {
                 return NoContent();
             }
-            return NotFound(result.Data);
+            return NotFound(result.Message);
         }
     }
 }

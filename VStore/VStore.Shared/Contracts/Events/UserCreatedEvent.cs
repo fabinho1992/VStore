@@ -1,4 +1,4 @@
-﻿namespace UserApi.Domain.Events
+﻿namespace VStore.Shared.Contracts.Events    
 {
     public class UserCreatedEvent
     {

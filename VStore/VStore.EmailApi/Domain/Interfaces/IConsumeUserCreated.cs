@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using UserApi.Domain.Events;
+using VStore.Shared.Contracts.Events;
 
 namespace VStore.EmailApi.Domain.Interfaces
 {

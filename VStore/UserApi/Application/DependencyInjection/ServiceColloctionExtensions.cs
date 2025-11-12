@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using VStore.Shared.Contracts.Events;
 
 namespace UserApi.Application.DependencysInjections
 {
@@ -16,7 +17,9 @@ namespace UserApi.Application.DependencysInjections
                         h.Password(configuration["RabbitMQ:Password"]);
                     });
 
-                    cfg.ConfigureEndpoints(context);
+                    // Customizar nome da exchange
+                    cfg.Message<UserCreatedEvent>(e =>
+                        e.SetEntityName("user-created-events"));
                 });
             });
 

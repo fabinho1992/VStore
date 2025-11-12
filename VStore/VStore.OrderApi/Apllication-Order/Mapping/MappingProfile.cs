@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using VStore.OrderApi.Apllication_Order.Dtos.Response;
 using VStore.OrderApi.Domain.Models;
+using VStore.Shared.Contracts.Dtos;
 
 namespace VStore.OrderApi.Apllication_Order.Mapping
 {

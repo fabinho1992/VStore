@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using VStore.OrderApi.Apllication_Order.Dtos;
 using VStore.OrderApi.Apllication_Order.Dtos.Inputs;
@@ -8,6 +9,8 @@ using VStore.OrderApi.Domain.IRepository;
 using VStore.OrderApi.Domain.IService;
 using VStore.OrderApi.Domain.Models;
 using VStore.OrderApi.Infrastructure.Repository;
+using VStore.Shared.Contracts.Dtos;
+using VStore.Shared.Contracts.Events;
 
 namespace VStore.OrderApi.Apllication_Order.Service
 {
@@ -16,12 +19,16 @@ namespace VStore.OrderApi.Apllication_Order.Service
         private readonly IRepositoryOrder<Order> _orderRepository;
         private readonly IHttpGetProducts _getProducts;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IRepositoryOrder<Order> repository, IHttpGetProducts getProducts, IMapper mapper)
+        public OrderService(IRepositoryOrder<Order> repository, IHttpGetProducts getProducts, IMapper mapper, IPublishEndpoint publishEndpoint, ILogger<OrderService> logger)
         {
             _orderRepository = repository;
             _getProducts = getProducts;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
+            _logger = logger;
         }
 
         public async Task<ResultViewModel<OrderResponse>> Create(OrderInput create)
@@ -47,19 +54,47 @@ namespace VStore.OrderApi.Apllication_Order.Service
             var order = CreateOrderWithItems(create.CustomerId, create.Items, products);
             await _orderRepository.Create(order);
 
+            await _publishEndpoint.Publish(new OrderCreatedEvent
+            {
+                CustomerId = create.CustomerId,
+                Id = order.Id,
+                TotalAmount = order.TotalAmount,
+                CreatedDate = order.CreatedDate,
+                OrderItems = order.Items.Select(i => new OrderItemResponse
+                {
+                    ProductId = i.ProductId,
+                    ProductName = i.ProductName,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice
+                }).ToList()
+            });
+
+            _logger.LogInformation($"Compra sendo processada{order.Id}, {order.Status}");
+
             var orderResponse = _mapper.Map<OrderResponse>(order);
 
             return ResultViewModel<OrderResponse>.Success(orderResponse);
         }
 
-        public Task<ResultViewModel<bool>> Delete(int id)
+        public async Task<ResultViewModel<bool>> Delete(int id)
         {
-            throw new NotImplementedException();
+            var user = await _orderRepository.FindById(id);
+            if (user == null)
+                return ResultViewModel<bool>.Error("Order not found");  
+            await _orderRepository.Delete(id);
+            return ResultViewModel<bool>.Success(true);
         }
 
-        public Task<ResultViewModel<OrderResponse>> FindById(int id)
+        public async Task<ResultViewModel<OrderResponse>> FindById(int id)
         {
-            throw new NotImplementedException();
+            var order = await _orderRepository.FindById(id);
+            if(order is null)
+            {
+                return ResultViewModel<OrderResponse>.Error("Order not found");
+            }
+
+            var orderResponse = _mapper.Map<OrderResponse>(order);
+            return ResultViewModel<OrderResponse>.Success(orderResponse);
         }
 
         public Task<ResultViewModel<List<OrderResponse>>> FindByText(string query)
@@ -74,12 +109,25 @@ namespace VStore.OrderApi.Apllication_Order.Service
             return ResultViewModel<List<OrderResponse>>.Success(orderResponses);
         }
 
+        public async Task<ResultViewModel<List<OrderResponse>>> GetByListConsumer(Guid id)
+        {
+            var orders = await _orderRepository.GetByConsumerId(id);
+            if (!orders.Any())
+            {
+                return ResultViewModel<List<OrderResponse>>.Error("Orders not found");
+            }
+
+            var ordersReponse = _mapper.Map<List<OrderResponse>>(orders);
+            return ResultViewModel<List<OrderResponse>>.Success(ordersReponse);
+
+        }
+
         public Task<ResultViewModel<OrderResponse>> Update(int id, OrderInput update)
         {
             throw new NotImplementedException();
         }
 
-        private Order CreateOrderWithItems(int customerId, List<OrderItemInput> items, List<ProductConsumerDto> products)
+        private Order CreateOrderWithItems(Guid customerId, List<OrderItemInput> items, List<ProductConsumerDto> products)
         {
             var order = new Order(customerId);
 

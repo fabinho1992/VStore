@@ -1,7 +1,6 @@
 ﻿using MassTransit;
-using UserApi.Domain.Events;
-using UserApi.Domain.Interfaces.IEmailServices;
 using VStore.EmailApi.Domain.Interfaces;
+using VStore.Shared.Contracts.Events;
 
 namespace VStore.EmailApi.Infrastructure.Consumers
 {

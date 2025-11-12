@@ -1,4 +1,4 @@
-﻿namespace VStore.OrderApi.Apllication_Order.Dtos.Response
+﻿namespace VStore.Shared.Contracts.Dtos
 {
     public class OrderItemResponse
     {
@@ -7,6 +7,5 @@
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Subtotal { get; set; }
-
     }
 }

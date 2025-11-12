@@ -9,5 +9,6 @@
         Task<T> Create(T create);
         Task<T> Update(T update);
         Task<bool> Delete(int id);
+        Task<List<T>> GetByConsumerId(Guid consumerId);    
     }
 }

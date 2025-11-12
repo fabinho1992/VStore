@@ -39,16 +39,17 @@ namespace VStore.ProductApi.Application.Service
 
         public async Task<ResultViewModel<List<ProductResponse>>> GetProductsOrder(string ids)
         {
-                // Converter string "1,2,3" para lista [1, 2, 3]
-                var productIds = ids.Split(',')
+            if (string.IsNullOrWhiteSpace(ids))
+                return ResultViewModel<List<ProductResponse>>.Error("Ids não encontrados");
+
+            // Converter string "1,2,3" para lista [1, 2, 3]
+            var productIds = ids.Split(',')
                     .Select(id => int.Parse(id.Trim()))
                     .Distinct()
                     .ToList();
 
-                // Buscar produtos do banco
                 var products = await _repository.GetProductsByIdsAsync(productIds);
 
-                // Converter para DTO
                 var productDtos = products.Select(p => new ProductResponse
                 {
                     Id = p.Id,

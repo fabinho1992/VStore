@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserApi.Domain.Interfaces.IEmailServices
+namespace VStore.EmailApi.Domain.Interfaces
 {
     public interface IEmailService
     {

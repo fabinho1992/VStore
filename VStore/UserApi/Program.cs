@@ -3,14 +3,19 @@ using ClinicManagement.Infrastructure.Services.AuthService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using UserApi.Application.DependencysInjections;
+using UserApi.Application.Services;
+using UserApi.Application.Services.IAuthService;
 using UserApi.Domain;
 using UserApi.Domain.Interfaces.IAuthService;
 using UserApi.Domain.Interfaces.IRepository;
+using UserApi.Domain.Interfaces.IService;
 using UserApi.Infrastructure;
 using UserApi.Infrastructure.Repository;
+using UserApi.Infrastructure.Service.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +33,10 @@ builder.Services.AddScoped<ILoginUser, LoginUser>();
 builder.Services.AddScoped<IAddRole, AddRole>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
+builder.Services.AddScoped<IAuthCommands, AuthCommands>();
+builder.Services.AddScoped<ICRUD, UserService>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //JWT Token
 var secretKey = builder.Configuration["Jwt:SecretKey"] ?? throw new ArgumentException("Invalid secret Key ..");

@@ -61,6 +61,13 @@ namespace VStore.OrderApi.Infrastructure.Repository
             return order;
         }
 
+        public async Task<List<Order>> GetByConsumerId(Guid consumerId)
+        {
+            var orders = await _context.Orders.Include(o => o.Items)
+                .Where(o => o.CustomerId == consumerId).ToListAsync();
+            return orders;
+        }
+
         public Task<List<Order>> GetProductsByIdsAsync(List<int> ids)
         {
             throw new NotImplementedException();

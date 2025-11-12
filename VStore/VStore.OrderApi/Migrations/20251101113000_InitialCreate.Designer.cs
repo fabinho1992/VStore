@@ -12,8 +12,8 @@ using VStore.OrderApi.Infrastructure.OrderContext;
 namespace VStore.OrderApi.Migrations
 {
     [DbContext(typeof(DbOrderContext))]
-    [Migration("20251021014213_InitialOrder")]
-    partial class InitialOrder
+    [Migration("20251101113000_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,8 +36,8 @@ namespace VStore.OrderApi.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Status")
                         .IsRequired()
