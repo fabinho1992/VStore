@@ -23,10 +23,10 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         
     - name: Restore dependencies
-      run: dotnet restore "VStore.sln"
+      run: dotnet restore "VStore/VStore.sln"
       
     - name: Build
-      run: dotnet build "VStore.sln" --configuration Release --no-restore
+      run: dotnet build "VStore/VStore.sln" --configuration Release --no-restore
       
     - name: Test
       run: dotnet test --configuration Release --no-build --verbosity normal
