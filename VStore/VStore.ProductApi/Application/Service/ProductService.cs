@@ -56,7 +56,7 @@ namespace VStore.ProductApi.Application.Service
                     Name = p.Name,
                     Price = p.Price,
                     Stock = p.Stock,
-                    CategoryName = p.Catergory.Name
+                    CategoryName = p.Catergory?.Name ?? "Sem categoria"
                 }).ToList();
 
                 return ResultViewModel<List<ProductResponse>>.Success(productDtos);

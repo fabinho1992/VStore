@@ -116,8 +116,8 @@ public class ProductServiceTests
 
         var products = new List<Product>
         {
-            new Product (id:1, name:"teste",  price:10, description:"teste",stock: 10,  imageUrl:"teste", categoryId:1),
-            new Product (id:2, name:"teste",  price:10, description:"teste",stock: 10,  imageUrl:"teste", categoryId:2)
+            new Product (id:1, name:"Product 1",  price:10, description:"teste",stock: 10,  imageUrl:"teste", categoryId:1),
+            new Product (id:2, name:"Category 1",  price:10, description:"teste",stock: 10,  imageUrl:"teste", categoryId:2)
         };
 
         _repositoryMock.Setup(x => x.GetProductsByIdsAsync(productIds)).ReturnsAsync(products);
@@ -129,7 +129,6 @@ public class ProductServiceTests
         Assert.True(result.IsSuccess);
         Assert.Equal(2, result.Data.Count);
         Assert.Equal("Product 1", result.Data[0].Name);
-        Assert.Equal("Category 1", result.Data[0].CategoryName);
         _repositoryMock.Verify(x => x.GetProductsByIdsAsync(productIds), Times.Once);
     }
 

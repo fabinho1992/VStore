@@ -8,6 +8,7 @@ using UserApi.Domain.ModelsAutentication;
 using MassTransit;
 using BookReviewManager.Infrastructure.Service.Identity;
 using UserApi.Infrastructure.Service.Identity;
+using VStore.Shared.Contracts.Events;
 
 namespace UserApi.UnitTests.Infrastructure;
 
