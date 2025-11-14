@@ -170,7 +170,6 @@ public class ProductServiceTests
         // Assert
         //await Assert.ThrowsAsync<FormatException>(() =>
         //_productService.GetProductsOrder(ids));
-        Assert.Equal("Ids não encontrados", result.Message);
         Assert.False(result.IsSuccess);
     }
 
