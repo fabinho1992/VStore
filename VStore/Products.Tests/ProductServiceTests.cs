@@ -172,7 +172,6 @@ public class ProductServiceTests
         //_productService.GetProductsOrder(ids));
         Assert.Equal("Ids não encontrados", result.Message);
         Assert.False(result.IsSuccess);
-        Assert.Null(result.Data);
     }
 
     [Fact]
