@@ -1,4 +1,7 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using VStore.ProductApi.Application.Dtos.Inputs;
 using VStore.ProductApi.Application.Dtos.Responses;
 using VStore.ProductApi.Application.Service;
@@ -33,6 +36,22 @@ builder.Services.AddScoped<ICRUDService<CategoryResponse, CategoryInput>, Catego
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+//Authentication and Authorization 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])),
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],    // "vstore-auth"
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:ValidAudience"], // "vstore-apis"
+            ValidateLifetime = true
+        };
+    });
 
 var app = builder.Build();
 
@@ -44,6 +63,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication(); // 👈👈👈 ESTA LINHA É OBRIGATÓRIA!
 
 app.MapControllers();
 

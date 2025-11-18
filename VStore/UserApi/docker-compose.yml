@@ -1,0 +1,45 @@
+﻿services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=F@b250511
+      - MSSQL_PID=Developer
+    ports:
+      - "1434:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - teste-docker
+
+  userapi:
+    build:
+      context: .  # ← MUDOU: . (pasta atual) em vez de ./UserApi
+      dockerfile: Dockerfile
+    container_name: userapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_SERVER=sql-server
+      - DB_NAME=UserDB
+      - DB_USER=sa
+      - DB_PASSWORD=F@b250511
+      - RabbitMQ__Host=host.docker.internal
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+      - RabbitMQ__Port=5672
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sql-server
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - teste-docker
+
+volumes:
+  sqlserver_data:
+
+networks:
+  teste-docker:
+    driver: bridge

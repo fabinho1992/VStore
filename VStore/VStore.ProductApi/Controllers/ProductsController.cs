@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VStore.ProductApi.Application.Dtos.Inputs;
 using VStore.ProductApi.Application.Dtos.Responses;
@@ -21,6 +22,7 @@ namespace VStore.ProductApi.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] ProductInput input)
         {
             try

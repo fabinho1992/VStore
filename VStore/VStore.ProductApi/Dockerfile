@@ -1,21 +1,27 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copia o .csproj e restaura dependências
-COPY VStore.ProductApi.csproj .
-RUN dotnet restore "VStore.ProductApi.csproj"
+# Copia os .csproj primeiro
+COPY ["VStore.ProductApi/VStore.ProductApi.csproj", "VStore.ProductApi/"]
+COPY ["VStore.Shared/VStore.Shared.csproj", "VStore.Shared/"]
+
+# Restaura as dependências
+RUN dotnet restore "VStore.ProductApi/VStore.ProductApi.csproj"
 
 # Copia o resto do código
 COPY . .
 
-# Build da aplicação
+WORKDIR "/src/VStore.ProductApi"
 RUN dotnet build "VStore.ProductApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "VStore.ProductApi.csproj" -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM base AS final
 WORKDIR /app
-EXPOSE 8080
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "VStore.ProductApi.dll"]

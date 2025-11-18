@@ -38,7 +38,8 @@ namespace BookReviewManager.Infrastructure.Service.Identity
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, usuario.UserName!),
+                     new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                    new Claim(ClaimTypes.Name, usuario.DisplayName!),
                     new Claim(ClaimTypes.Email, usuario.Email!),
                     new Claim("id", usuario.UserName!),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
